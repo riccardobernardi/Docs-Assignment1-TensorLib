@@ -82,7 +82,7 @@ TensorIteratorFixed<T, rank> begin(const std::vector<int>& starting_indexes, con
 TensorIteratorFixed<T, rank> end(const std::vector<int>& starting_indexes, const size_t& sliding_index){};
 ```
 
-It would be important to be compliant with the smart fors so the tensors have begin and end, in this way you can use iterators as members of a class that is more convenient than using them as static methods passing the tensor as parameter. Obviously we have two overloaded begin and end because the simpler is for the random access and the more comples is because you need to fix some axis and 
+It would be important to be compliant with the smart fors so the tensors have begin and end, in this way you can use iterators as members of a class that is more convenient than using them as static methods passing the tensor as parameter. Obviously we have two overloaded begins and ends because the simpler is for the random access and the more complex is because you need to fix some axis and 
 
 ## 3 Static rank 1 tensor
 

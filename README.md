@@ -417,21 +417,53 @@ A tensor has also operations between tensors so here there is a list of them:
 ```c++
 T& operator*() const {};
 T* operator->() const {};
+```
+
+The first operator gives a pointer to write/read the value pointed and the pointer is constant.
+
+The second one returns a pointer to a pointer that is again constant.
+
+```c++
 TensorIterator<T, rank> operator++(int) {};
 TensorIterator<T, rank>& operator++() {};
 TensorIterator<T, rank> operator--(int) {};
 TensorIterator<T, rank>& operator--() {};
+```
+
+These operators in case they are prefix(parenthesis with null inside) increment pointer and return it otherwise if they are postfix(parentheses with "int" inside) then they return pointer and after they increment.
+
+```c++
 bool operator==(const TensorIterator<T, rank>& other_iterator) const {};
 bool operator!=(const TensorIterator<T, rank>& other_iterator) const {};
+```
+
+Equality operators are useful in the smart fors and they returns a boolean value checking that the tensor is the same for both the iterators and the indexes are equal.
+
+```c++
 TensorIterator<T, rank>& operator+=(int inc) {};
 TensorIterator<T, rank>& operator-=(int dec) {};
 TensorIterator<T, rank> operator+(int inc) const {};
 TensorIterator<T, rank> operator-(int dec) const {};
+```
+
+They uses a private function called "increment" to modify in a proper way the indexes on which It is pointing the iterator. This auxiliary function is needed because of the fact that inside every tensor is multi-dimensional so we need to transform for example a "+1" into an operation that respects the widths of various dimensions.
+
+```c++
 T& operator[](int access_index) const {};
+```
+
+fff
+
+```c++
 bool operator<(const TensorIterator<T, rank>& other_iterator) const {};
 bool operator>(const TensorIterator<T, rank>& other_iterator) const {};
 bool operator<=(const TensorIterator<T, rank>& other_iterator) const {};
 bool operator>=(const TensorIterator<T, rank>& other_iterator) const {};
+```
+
+Fff
+
+```c++
 int operator-(const TensorIterator<T, rank>& other_iterator) const {}:
 ```
 

@@ -62,6 +62,13 @@ The third method takes a reference to a tensor and since the creator belongs to 
 
 The fourth method exists because of the fact that methods before create an empty tensor that has to be filled in a second moment instead this one permits at the same time to create and fill.
 
+```c++
+Tensor<T, rank>() : widths(), strides(), data(), offset() {}
+```
+
+The class also contains a private empty constructor that is used in slice method to construct a new empty tensor with lower rank..
+
+
 After constructors is important to remember Tensor<T, rank> friends:
 
 ```c++
@@ -102,6 +109,7 @@ T& operator()(const initializer_list<size_t>& indices){};
 T& operator()(vector<int> indices_v){};
 T get(const initializer_list<size_t> indices) const{};
 void set(const initializer_list<size_t> indices, const T& value){};
+void initialize(const std::initializer_list<T>& a){};
 ```
 
 Through this method we can get a reference to a memory cell of the tensor that we can read or write, the method checks for bounds to ensure that user doesn't goes out of bounds. To receive the value we search for the cell in the position that is calculated in this way: 
@@ -113,6 +121,8 @@ The offset is needed in case we do a slicing operation, we will see how it is ca
 The second method that uses a vector is useful when the queries does not come from the user but from other methods of the library. Using vector in practice permits a programmatically buildable query.
 
 Third and Fourth methods offer an other way to get and set values from/to Tensor.
+
+Initialize method allow to specify a new vector to use as data container, it must have same size of the old vector.
 
 Slicing Method:
 
@@ -217,6 +227,7 @@ T& operator()(const initializer_list<size_t>& indices){};
 T& operator()(vector<int> indices_v){};
 T get(const initializer_list<size_t> indices) const{};
 void set(const initializer_list<size_t> indices, const T& value){};
+void initialize(const std::initializer_list<T>& a){};
 ```
 
 The window method:
@@ -280,6 +291,7 @@ T& operator()(const initializer_list<size_t>& indices){};
 T& operator()(vector<int> indices_v){};
 T get(const initializer_list<size_t> indices) const{};
 void set(const initializer_list<size_t> indices, const T& value){};
+void initialize(const std::initializer_list<T>& a){};
 ```
 
 Slicing Method:
@@ -383,6 +395,16 @@ int operator-(const TensorIterator<T, rank>& other_iterator) const {}:
 
 This operator returns a value that is the distance between two references of two iterators that belongs to the same tensor.
 
+Private methods:
+
+```c++
+int single_index() const {};
+void increment(int index_inc) {};
+```
+
+The first method calculate a single index using multiple indexes of the iterator, it is used to calculate the difference between two iterators.
+The second method increment (or decrement) iterators indexes according to the tensor's dimensions.
+
 ### Tensor Iterator Fixed
 
 ```c++
@@ -433,3 +455,11 @@ bool operator>=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 int operator-(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 ```
 
+Private methods:
+
+```c++
+void increment(int index_inc) {};
+bool check_indexes_equality(const TensorIteratorFixed<T, rank> other_iter, const size_t index_ignore) const {};
+```
+
+Last method check the equivalence between the indexes of this iterator and another one, index_ignore is the index to ignore in the equivalence. This method is used to check that the equivalence of fixed indexes between iterators.

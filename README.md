@@ -396,9 +396,46 @@ Strides and data are maintained. At the end the resulting vector is a vector wit
 
 ## 3 Tensor Iterators
 
-
-
 ### Tensor Iterator
+
+The tensorIterator acts as a random-access iterator and its signatures are:
+
+```c++
+TensorIterator<T, rank>(Tensor<T, rank>& tensor) : ttensor(tensor) {};
+TensorIterator<T, rank>(const TensorIterator<T, rank>& old_iterator) : ttensor(old_iterator.ttensor), indexes(old_iterator.indexes) {};
+TensorIterator<T, rank>(Tensor<T, rank>& tensor, const std::vector<int>& starting_indexes) : indexes(starting_indexes), ttensor(tensor){};
+```
+
+The first one takes reference of the tensor and binds it to its inner ttensor. It also sets up the indexes of the iterator based on dimensions of the tensor and initially they are zeros, this permits to start from the first indexable value in the tensor.
+
+The second is a copy constructor to permit the duplication of an iterator.
+
+The third one takes a reference to a tensor and a vector of starting indexes so the user can decide to skip some initial cells. There is no check about coherence of starting indexes with the internal state of the iterator or of the tensor.
+
+A tensor has also operations between tensors so here there is a list of them:
+
+```c++
+T& operator*() const {};
+T* operator->() const {};
+TensorIterator<T, rank> operator++(int) {};
+TensorIterator<T, rank>& operator++() {};
+TensorIterator<T, rank> operator--(int) {};
+TensorIterator<T, rank>& operator--() {};
+bool operator==(const TensorIterator<T, rank>& other_iterator) const {};
+bool operator!=(const TensorIterator<T, rank>& other_iterator) const {};
+TensorIterator<T, rank>& operator+=(int inc) {};
+TensorIterator<T, rank>& operator-=(int dec) {};
+TensorIterator<T, rank> operator+(int inc) const {};
+TensorIterator<T, rank> operator-(int dec) const {};
+T& operator[](int access_index) const {};
+bool operator<(const TensorIterator<T, rank>& other_iterator) const {};
+bool operator>(const TensorIterator<T, rank>& other_iterator) const {};
+bool operator<=(const TensorIterator<T, rank>& other_iterator) const {};
+bool operator>=(const TensorIterator<T, rank>& other_iterator) const {};
+int operator-(const TensorIterator<T, rank>& other_iterator) const {}:
+```
+
+
 
 ### Tensor Iterator Fixed
 

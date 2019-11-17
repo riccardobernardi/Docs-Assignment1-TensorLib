@@ -127,7 +127,7 @@ It receives as input the dimension index that the user wants to cut out and the 
 
 The offset is calculated as:
 
-$$offset = strides[index]\cdot value + old_offset$$
+$$offset = strides[index]\cdot value + old\_offset$$
 
 And the data is the same data of the old vector.
 
@@ -390,7 +390,7 @@ TensorIteratorFixed<T, rank>(const TensorIteratorFixed<T, rank>& old_iterator) :
 
 The first constructor takes starting indexes as an initializer list of the same size of number of dimensions of the tensor and takes also a sliding index that is the index of the dimension that can vary so the dimnsion on which the user wants to iterate. Other dimensions remains fixed. The second constructor is a copy constructor to dupliucate the current iterator.
 
-The operations below works in the same way of the ones of the "Tensor Iterator"
+The operations below works in the same way of the ones of the "Tensor Iterator":
 
 ```c++
 T& operator*() const {};

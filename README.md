@@ -310,7 +310,7 @@ Tensor<T> window(const size_t& index, const size_t& start, const size_t& stop){}
 
 ### Tensor Iterator
 
-The tensorIterator acts as a random-access iterator and its signatures are:
+The tensorIterator acts as a random-access iterator and its constructors' signatures are:
 
 ```c++
 TensorIterator<T, rank>(Tensor<T, rank>& tensor) : ttensor(tensor) {};
@@ -324,16 +324,16 @@ The second is a copy constructor to permit the duplication of an iterator.
 
 The third one takes a reference to a tensor and a vector of starting indexes so the user can decide to skip some initial cells. There is no check about coherence of starting indexes with the internal state of the iterator or of the tensor.
 
-A tensor has also operations between tensors so here there is a list of them:
+An iterator has also unary and binary operations so here there is a list of them:
 
 ```c++
 T& operator*() const {};
 T* operator->() const {};
 ```
 
-The first operator gives a pointer to write/read the value pointed and the pointer is constant.
+The first operator gives a reference to write/read the value pointed.
 
-The second one returns a pointer to a pointer that is again constant.
+The second one returns a pointer to the element pointed by the iterator.
 
 ```c++
 TensorIterator<T, rank> operator++(int) {};
@@ -375,6 +375,8 @@ bool operator>=(const TensorIterator<T, rank>& other_iterator) const {};
 
 These operators are useful to cycle on a tensor, they checks if the current iterator respects inequality described returning a boolean value. Since we need only to check that two tensors and indexes of the two iterators are right then we need only the const reference to the other vector.
 
+Boolean operators always return false if tensor pointed are different
+
 ```c++
 int operator-(const TensorIterator<T, rank>& other_iterator) const {}:
 ```
@@ -388,9 +390,9 @@ TensorIteratorFixed<T, rank>(Tensor<T>& tensor, const std::vector<int>& starting
 TensorIteratorFixed<T, rank>(const TensorIteratorFixed<T, rank>& old_iterator) : ttensor(old_iterator.ttensor), indexes(old_iterator.indexes), sliding_index(old_iterator.sliding_index) {};
 ```
 
-The first constructor takes starting indexes as an initializer list of the same size of number of dimensions of the tensor and takes also a sliding index that is the index of the dimension that can vary so the dimnsion on which the user wants to iterate. Other dimensions remains fixed. The second constructor is a copy constructor to dupliucate the current iterator.
+The first constructor takes starting indexes as an initializer list of the same size of number of dimensions of the tensor and takes also a sliding index that is the index of the dimension that can vary so the dimension on which the user wants to iterate. Other dimensions remains fixed. The second constructor is a copy constructor to duplicate the current iterator.
 
-The operations below works in the same way of the ones of the "Tensor Iterator":
+The operations below works in the same way of the ones of the "Tensor Iterator", in this case boolean operators always return false if tensor pointed, fixed indexes or sliding index are different.
 
 ```c++
 T& operator*() const {};

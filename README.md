@@ -9,11 +9,8 @@
 
 ## Table of contents
 1. Introduction and general structure
-2. Static rank tensor
-3. Static rank 1 tensor
-4. Dynamic rank tensor
-5. Tensor Iterator
-6. Tensor Iterator Fixed
+2. Tensor
+5. Tensor Iterators
 
 ## 1 Introduction and general structure
 
@@ -31,7 +28,11 @@ Both the iterator classes are templated on rank of the relative tensor.
 
 All the classe templates contain the type parameter relative to the objects saved in tensor.
 
-## 2 Static rank tensor
+We decided to not represent a tensor zero template because It would be a datapoint that is not of interest and can be overkill to represent it with a structure that at the end costs more than the datum itself. Furthermore since we cannot go from a lower templated type to an higher templated one(because every operation reduces rank or leave it as before) the zero template will remain simple variable with a get and a set.
+
+## 2 Tensor
+
+### Static rank tensor
 
 The static rank tensor has this signature:
 
@@ -162,22 +163,22 @@ offset += strides[index] * start
 
 Strides and data are maintained. At the end the resulting vector is a vector with the same rank as initial one.
 
-## 3 Static rank 1 tensor
+### Static rank 1 tensor
 
-The static rank tensor has this signature:
+The static rank tensor 1 has this signature:
 
 ```c++
-template<class T = size_t, size_t rank=0>
+template<class T = size_t, 1>
 class Tensor{}
 ```
 
 This class is part of a framework composed by specialized templates and this means that if the user specifies the rank then the methods that will be called will be ones in this class. Constructors for this class are many because of the fact that in this way it is possible to insert data in different manners. Fact of having many constructors is important also for the methods inside the class.
 
 ```c++
-Tensor<T,rank>(std::initializer_list<size_t> a){}
-Tensor<T,rank>(const std::vector<size_t> a){}
-Tensor<T, rank>(const Tensor<T, rank>& a) : widths(a.widths), strides(a.strides), data(a.data), offset(a.offset){}
-Tensor<T, rank>(const std::initializer_list<size_t>& a, std::vector<T>& new_data){}
+Tensor<T, 1>(std::initializer_list<size_t> a){}
+Tensor<T, 1>(const std::vector<size_t> a){}
+Tensor<T, 1>(const Tensor<T, rank>& a) : widths(a.widths), strides(a.strides), data(a.data), offset(a.offset){}
+Tensor<T, 1>(const std::initializer_list<size_t>& a, std::vector<T>& new_data){}
 ```
 
 For all the constructors holds the property below: 
@@ -240,7 +241,7 @@ The offset is needed in case we do a slicing operation, we will see how it is ca
 
 The second method that uses a vector is useful when the queries does not come from the user but from other methods of the library. Using vector in practice permits a programmatically buildable query.
 
-Slicing and Flattening operator are not permitted on a single dimension tensor because we decided to not represent a tensor zero template. It would be a datapoint that is not of interest and can be overkill to represent it with a structure that at the end costs more than the datum itself.
+Slicing and Flattening operator are not permitted on a single dimension tensor because we decided to not represent a tensor zero template.
 
 The window method:
 
@@ -262,12 +263,12 @@ offset += strides[index] * start
 
 Strides and data are maintained. At the end the resulting vector is a vector with the same rank as initial one.
 
-## 4 Dynamic rank tensor
+### Dynamic rank tensor
 
 The static rank tensor has this signature:
 
 ```c++
-template<class T = size_t, size_t rank=0>
+template<class T = size_t, 0>
 class Tensor{}
 ```
 
@@ -393,8 +394,11 @@ offset += strides[index] * start
 
 Strides and data are maintained. At the end the resulting vector is a vector with the same rank as initial one.
 
-## 5 Tensor Iterator
+## 3 Tensor Iterators
 
 
 
-## 6 Tensor Iterator Fixed
+### Tensor Iterator
+
+### Tensor Iterator Fixed
+

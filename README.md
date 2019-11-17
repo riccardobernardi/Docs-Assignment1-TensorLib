@@ -472,17 +472,18 @@ This operator returns a value that is the distance between two references of two
 ### Tensor Iterator Fixed
 
 ```c++
+TensorIteratorFixed<T, rank>(Tensor<T>& tensor, const std::vector<int>& starting_indexes, const size_t& sliding_index) :ttensor(tensor) {};
 TensorIteratorFixed<T, rank>(const TensorIteratorFixed<T, rank>& old_iterator) : ttensor(old_iterator.ttensor), indexes(old_iterator.indexes), sliding_index(old_iterator.sliding_index) {};
 ```
 
-Fff
+The first constructor takes starting indexes as an initializer list of the same size of number of dimensions of the tensor and takes also a sliding index that is the index of the dimension that can vary so the dimnsion on which the user wants to iterate. Other dimensions remains fixed. The second constructor is a copy constructor to dupliucate the current iterator.
+
+The operations below works in the same way of the ones of the "Tensor Iterator"
 
 ```c++
 T& operator*() const {};
 T* operator->() const {};
 ```
-
-Fff
 
 ```c++
 TensorIteratorFixed<T, rank> operator++(int) {};
@@ -491,14 +492,10 @@ TensorIteratorFixed<T, rank> operator--(int) {};
 TensorIteratorFixed<T, rank>& operator--() {};
 ```
 
-Fff
-
 ```c++
 bool operator==(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 bool operator!=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 ```
-
-Fff
 
 ```c++
 TensorIteratorFixed<T, rank>& operator+=(int inc) {};
@@ -507,13 +504,9 @@ TensorIteratorFixed<T, rank> operator+(int inc) const {};
 TensorIteratorFixed<T, rank> operator-(int dec) const {};
 ```
 
-Fff
-
 ```c++
 T& operator[](int access_index) const {};
 ```
-
-Fff
 
 ```c++
 bool operator<(const TensorIteratorFixed<T, rank>& other_iterator) const {};
@@ -521,8 +514,6 @@ bool operator>(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 bool operator<=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 bool operator>=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
 ```
-
-Fff
 
 ```c++
 int operator-(const TensorIteratorFixed<T, rank>& other_iterator) const {};

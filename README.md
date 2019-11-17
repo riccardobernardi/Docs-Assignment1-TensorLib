@@ -452,7 +452,7 @@ They uses a private function called "increment" to modify in a proper way the in
 T& operator[](int access_index) const {};
 ```
 
-fff
+This operation simulates a movement of the iterator to the point requested by the user but at the end of the operation the iterator returns to the point before of this operation.
 
 ```c++
 bool operator<(const TensorIterator<T, rank>& other_iterator) const {};
@@ -461,13 +461,70 @@ bool operator<=(const TensorIterator<T, rank>& other_iterator) const {};
 bool operator>=(const TensorIterator<T, rank>& other_iterator) const {};
 ```
 
-Fff
+These operators are useful to cycle on a tensor, they checks if the current iterator respects inequality described returning a boolean value. Since we need only to check that two tensors and indexes of the two iterators are right then we need only the const reference to the other vector.
 
 ```c++
 int operator-(const TensorIterator<T, rank>& other_iterator) const {}:
 ```
 
-
+This operator returns a value that is the distance between two references of two iterators that belongs to the same tensor.
 
 ### Tensor Iterator Fixed
+
+```c++
+TensorIteratorFixed<T, rank>(const TensorIteratorFixed<T, rank>& old_iterator) : ttensor(old_iterator.ttensor), indexes(old_iterator.indexes), sliding_index(old_iterator.sliding_index) {};
+```
+
+Fff
+
+```c++
+T& operator*() const {};
+T* operator->() const {};
+```
+
+Fff
+
+```c++
+TensorIteratorFixed<T, rank> operator++(int) {};
+TensorIteratorFixed<T, rank>& operator++() {};
+TensorIteratorFixed<T, rank> operator--(int) {};
+TensorIteratorFixed<T, rank>& operator--() {};
+```
+
+Fff
+
+```c++
+bool operator==(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+bool operator!=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+```
+
+Fff
+
+```c++
+TensorIteratorFixed<T, rank>& operator+=(int inc) {};
+TensorIteratorFixed<T, rank>& operator-=(int dec) {};
+TensorIteratorFixed<T, rank> operator+(int inc) const {};
+TensorIteratorFixed<T, rank> operator-(int dec) const {};
+```
+
+Fff
+
+```c++
+T& operator[](int access_index) const {};
+```
+
+Fff
+
+```c++
+bool operator<(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+bool operator>(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+bool operator<=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+bool operator>=(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+```
+
+Fff
+
+```c++
+int operator-(const TensorIteratorFixed<T, rank>& other_iterator) const {};
+```
 
